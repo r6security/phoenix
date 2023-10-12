@@ -1,0 +1,87 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.3
+  creationTimestamp: null
+  name: adaptivemovingtargetdefenses.amtd.r6security.com
+spec:
+  group: amtd.r6security.com
+  names:
+    kind: AdaptiveMovingTargetDefense
+    listKind: AdaptiveMovingTargetDefenseList
+    plural: adaptivemovingtargetdefenses
+    singular: adaptivemovingtargetdefense
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: AdaptiveMovingTargetDefense is the Schema for the adaptivemovingtargetdefenses
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AdaptiveMovingTargetDefenseSpec defines the desired state
+              of AdaptiveMovingTargetDefense
+            properties:
+              podSelector:
+                additionalProperties:
+                  type: string
+                description: PodSelector is the selector of the Kubernetes Pods on
+                  which the user desires to enable moving target defense
+                type: object
+              strategy:
+                description: Define strategy that maps actions to security events
+                  (based on the security event fields)
+                items:
+                  description: MovingStrategy Substructure for strategy definitions
+                  properties:
+                    action:
+                      description: Action field value of the SecurityEvent that arrives
+                      type: string
+                    rule:
+                      properties:
+                        source:
+                          description: Source field value of the SecurityEvent that
+                            arrives
+                          type: string
+                        threatLevel:
+                          description: ThreatLevel field value of the SecurityEvent
+                            that arrives
+                          type: string
+                        type:
+                          description: Type field value of the SecurityEvent that
+                            arrives
+                          type: string
+                      type: object
+                  required:
+                  - action
+                  - rule
+                  type: object
+                type: array
+            required:
+            - podSelector
+            - strategy
+            type: object
+          status:
+            description: AdaptiveMovingTargetDefenseStatus defines the observed state
+              of AdaptiveMovingTargetDefense
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

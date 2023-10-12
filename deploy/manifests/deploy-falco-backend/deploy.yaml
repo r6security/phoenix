@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: falco-backend
+spec: {}
+status: {}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: falco-backend
+  name: falco-backend
+  namespace: falco-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: falco-backend
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: falco-backend
+    spec:
+      containers:
+      - image: phoenixop/falco-backend:0.0.1
+        name: falco-backend
+        resources: {}
+        imagePullPolicy: Always
+        env:
+        - name: SERVER_PORT
+          value: "11111"
+        ports:
+        - name: web
+          containerPort: 11111
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: falco-backend
+  namespace: falco-backend
+spec:
+  selector:
+    app.kubernetes.io/name: falco-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: web
+      name: web
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: falco-backend
+rules:
+- apiGroups:
+  - amtd.r6security.com
+  resources:
+  - securityevents
+  verbs:
+  - get
+  - list
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: falco-backend
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: falco-backend
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: falco-backend

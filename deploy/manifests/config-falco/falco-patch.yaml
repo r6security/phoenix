@@ -1,0 +1,12 @@
+spec:
+  template:
+    spec:
+      containers:
+      - name: falco
+        volumeMounts:
+        - name: custom-rules
+          mountPath: /etc/r6security
+      volumes:
+      - name: custom-rules
+        configMap:
+          name: falco-rules

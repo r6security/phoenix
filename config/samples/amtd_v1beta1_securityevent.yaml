@@ -1,0 +1,18 @@
+apiVersion: amtd.r6security.com/v1beta1
+kind: SecurityEvent
+metadata:
+  labels:
+    app.kubernetes.io/name: securityevent
+    app.kubernetes.io/instance: securityevent-sample
+    app.kubernetes.io/part-of: operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: operator
+  name: securityevent-sample
+spec:
+  targets:
+    - default/nginx-789f54744c-qsjqb
+  rule:
+    type: filesystem-corruption
+    threatLevel: medium
+    source: falco
+  description: "Falco: I saw a non-authorazied edit in /etc/shadow."

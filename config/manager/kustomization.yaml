@@ -1,0 +1,11 @@
+resources:
+- manager.yaml
+- registry-secret.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: controller
+  newName: registry.github.com/r6security/phoenix
+  newTag: latest
+patchesStrategicMerge:
+- manager-image-pull-secret-patch.yaml

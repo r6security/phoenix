@@ -1,0 +1,33 @@
+apiVersion: amtd.r6security.com/v1beta1
+kind: AdaptiveMovingTargetDefense
+metadata:
+  labels:
+    app.kubernetes.io/name: adaptivemovingtargetdefense
+    app.kubernetes.io/instance: adaptivemovingtargetdefense-sample
+    app.kubernetes.io/part-of: operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: operator
+  name: adaptivemovingtargetdefense-sample
+spec:
+  podSelector:
+    mtdSecured: "true"
+  strategy:
+    - rule: 
+        type: default
+      action: disable
+    - rule: 
+        type: test
+        threatLevel: warning
+        source: TimerBackend
+      action: delete
+    - rule: 
+        type: network-attack
+      action: quarantine
+    - rule: 
+        type: filesystem-corruption
+        threatLevel: medium
+        source: falco
+      action: quarantine
+    - rule: 
+        threatLevel: medium
+      action: quarantine

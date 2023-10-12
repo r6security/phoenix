@@ -1,0 +1,27 @@
+# permissions for end users to view adaptivemovingtargetdefenses.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: adaptivemovingtargetdefense-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: operator
+    app.kubernetes.io/part-of: operator
+    app.kubernetes.io/managed-by: kustomize
+  name: adaptivemovingtargetdefense-viewer-role
+rules:
+- apiGroups:
+  - amtd.r6security.com
+  resources:
+  - adaptivemovingtargetdefenses
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - amtd.r6security.com
+  resources:
+  - adaptivemovingtargetdefenses/status
+  verbs:
+  - get

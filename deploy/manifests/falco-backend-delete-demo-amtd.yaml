@@ -1,0 +1,19 @@
+apiVersion: amtd.r6security.com/v1beta1
+kind: AdaptiveMovingTargetDefense
+metadata:
+  labels:
+    app.kubernetes.io/name: adaptivemovingtargetdefense
+    app.kubernetes.io/instance: adaptivemovingtargetdefense-sample
+  name: amtd-demo
+spec:
+  podSelector:
+    app: demo-page
+  strategy:
+    - rule: 
+        type: default
+      action: disable
+    - rule: 
+        type: Terminal shell in container
+        threatLevel: Notice
+        source: FalcoBackend
+      action: delete
