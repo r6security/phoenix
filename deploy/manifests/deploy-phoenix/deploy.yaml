@@ -518,7 +518,7 @@ spec:
         - --leader-elect
         command:
         - /manager
-        image: registry.github.com/r6security/phoenix:0.0.1
+        image: phoenixop/amtd-operator:0.1
         livenessProbe:
           httpGet:
             path: /healthz
@@ -544,8 +544,6 @@ spec:
           capabilities:
             drop:
             - ALL
-      imagePullSecrets:
-      - name: registry-secret
       securityContext:
         runAsNonRoot: true
       serviceAccountName: operator-controller-manager
