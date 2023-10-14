@@ -29,7 +29,7 @@ Load configuration to Falco that fits for this scenario:
     kubectl create configmap -n falco falco-rules --from-file deploy/manifests/config-falco/falco-rules.yaml
     kubectl patch -n falco daemonsets.apps falco --patch-file deploy/manifests/config-falco/falco-patch.yaml
     kubectl delete pods -n falco -l app.kubernetes.io/name=falco
-    kubectl -n falco-integrator get pods
+    kubectl -n falco get pods
 
 ## Falco-integrator installation
 
@@ -41,7 +41,7 @@ Before triggering the operator let's install a demo application and check that t
 
 ### Deploy demo-page application
 
-    kubectl apply -n demo-page -f deploy/manifests/demo-page/demo-page-deployment.yaml
+    kubectl -n demo-page apply -f deploy/manifests/demo-page/demo-page-deployment.yaml
 
 Confirm that a terminal can be opened inside the pod:
 
@@ -53,7 +53,7 @@ We can see that we are in the terminal, so let's exit from the pod:
 
 Now we can activate the MTD configuration to take action in case of terminal opening events:
 
-    kubectl apply -n demo-page -f deploy/manifests/falco-integrator-delete-demo-amtd.yaml
+    kubectl -n demo-page apply -f deploy/manifests/falco-integrator-delete-demo-amtd.yaml
 
 ### Trigger the operator
 

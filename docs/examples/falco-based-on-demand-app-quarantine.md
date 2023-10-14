@@ -33,7 +33,7 @@ Load configuration to Falco that fits for this scenario:
     kubectl create configmap -n falco falco-rules --from-file deploy/manifests/config-falco/falco-rules.yaml
     kubectl patch -n falco daemonsets.apps falco --patch-file deploy/manifests/config-falco/falco-patch.yaml
     kubectl delete pods -n falco -l app.kubernetes.io/name=falco
-    kubectl -n falco-integrator get pods
+    kubectl -n falco get pods
 
 ## Falco-integrator installation
 
