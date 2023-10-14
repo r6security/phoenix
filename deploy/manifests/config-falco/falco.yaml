@@ -18,7 +18,7 @@ http_output:
   ca_path: /etc/ssl/certs
   enabled: true
   insecure: true
-  url: "falco-backend.falco-backend"
+  url: "falco-integrator.falco-integrator"
   user_agent: falcosecurity/falco
 json_include_output_property: true
 json_include_tags_property: true

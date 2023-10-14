@@ -66,5 +66,5 @@ watch kubectl -n demo-page get pods
 
 You can try Phoenix out at Killercoda in a self paced tutorial where you can try out the following scenarios:
 * Scheduled restart with Time-based Trigger
-* On-demand restart with Falco Backend
-* On-Demand quarantine with Falco Backend
+* On-demand restart with Falco-integrator
+* On-demand quarantine with Falco-integrator

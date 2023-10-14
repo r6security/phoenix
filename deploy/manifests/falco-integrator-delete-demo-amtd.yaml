@@ -9,12 +9,11 @@ spec:
   podSelector:
     app: demo-page
   strategy:
-    - rule:
+    - rule: 
         type: default
       action: disable
     - rule: 
         type: Terminal shell in container
         threatLevel: Notice
-        source: FalcoBackend
-      action: quarantine
-
+        source: FalcoIntegrator
+      action: delete
