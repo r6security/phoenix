@@ -11,11 +11,11 @@ In this tutorial you will learn how to:
 
 ## Phoenix installation
 
-    kubectl -n moving-target-defense apply -f deploy/manifests/deploy-phoenix
+    kubectl apply -n moving-target-defense -f deploy/manifests/deploy-phoenix
 
 ## Time-based Trigger installation
 
-    kubectl apply -n time-based-trigger -f deploy/manifests/time-based-trigger
+    kubectl apply -n time-based-trigger -f deploy/manifests/deploy-time-based-trigger
 
 ## Create a demo application to have something to illustrate the scenario with
 
@@ -42,7 +42,5 @@ Watch pods to see the restarts in every 30 seconds:
 ## Clean up
 
     kubectl -n moving-target-defense delete -f deploy/manifests/deploy-phoenix
-    kubectl -n time-based-trigger delete -f deploy/manifests/time-based-trigger
-    kubectl delete ns moving-target-defense
-    kubectl delete ns time-based-trigger
+    kubectl -n time-based-trigger delete -f deploy/manifests/deploy-time-based-trigger
     kubectl delete -n demo-page

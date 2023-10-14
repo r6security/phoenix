@@ -1,13 +1,13 @@
 # Phoenix demo: Falco based on-demand application quarantine
 
-This tutorial shows how to use Phoenix to put a specific pod into quarantine when a terminal is opened into it. For this Phoeinx relies on triggers (SecurityEvents) that are created by the Falco-Backend that translates Falco events towards Phoenix. 
+This tutorial shows how to use Phoenix to put a specific pod into quarantine when a terminal is opened into it. For this Phoeinx relies on triggers (SecurityEvents) that are created by the Falco-integrator that translates Falco events towards Phoenix. 
 
 In this tutorial you will learn how to:
 
 - install Phoenix
 - install Falco
 - configure Falco
-- install Falco-Backend to be able translate Falco notifications to SecurityEvents
+- install Falco-integrator to be able translate Falco notifications to SecurityEvents
 - configure Phoenix
 
 ## Prerequisite:
@@ -33,11 +33,11 @@ Load configuration to Falco that fits for this scenario:
     kubectl create configmap -n falco falco-rules --from-file deploy/manifests/config-falco/falco-rules.yaml
     kubectl patch -n falco daemonsets.apps falco --patch-file deploy/manifests/config-falco/falco-patch.yaml
     kubectl delete pods -n falco -l app.kubernetes.io/name=falco
-    kubectl -n falco-backend get pods
+    kubectl -n falco get pods
 
-## Falco-Backend installation
+## Falco-integrator installation
 
-    kubectl -n falco-backend apply -f deploy/manifests/deploy-falco-backend
+    kubectl -n falco-integrator apply -f deploy/manifests/deploy-falco-integrator
 
 ## Phoenix configuration:
 
@@ -61,7 +61,7 @@ Let's exit:
 
 Now we can activate the MTD configuration to take action in case of terminal opening events:
 
-    kubectl apply -n demo-page -f deploy/manifests/falco-backend-quarantine-demo-amtd.yaml
+    kubectl apply -n demo-page -f deploy/manifests/falco-integrator-quarantine-demo-amtd.yaml
 
 ### Trigger the operator
 

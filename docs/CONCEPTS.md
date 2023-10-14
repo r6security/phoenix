@@ -12,7 +12,7 @@ The collection of rule-action pairs are called `strategy` in AdaptiveMovingTarge
 
 The SecurityEvents typically originate from 3rd party security analytics tools (e.g., Falco, KubeArmor, KSOC) via Integration Backends. Since the 3rd party security analytics tools are independent from Phoenix, they do not know anything about SecurityEvents, neither necessarily need to run on Kubernetes, hence the creation of SecurityEvents is the responsibility of the Integration Backends. 
 An Integration Backend is a webserver (as of now) that is prepared to receive notifications from a 3rd party security analytics tool via a webhook and to translate the threat information towards Phoenix via creating a SecurityEvent resource inside the cluster.
-Each Integration Backend is specifically created for a concrete tool (e.g., Falco Backend, KSOC Backend) and runs inside the Kubernetes cluster, so integrating Phoenix with these tools requires no modification on their side; only the proper notification method and Integration Backend - as the receiving endpoint - need to be configured making the process transparent from their viewpoint.
+Each Integration Backend is specifically created for a concrete tool (e.g., Falco-integrator, KSOC-integrator) and runs inside the Kubernetes cluster, so integrating Phoenix with these tools requires no modification on their side; only the proper notification method and Integration Backend - as the receiving endpoint - need to be configured making the process transparent from their viewpoint.
 
 Every time one would like to introduce a new 3rd party security analytics tool integration for Phoenix the only task is to implement a new Integration Backend that is capable of translating the threat notifications of that tool to SecurityEvents.
 

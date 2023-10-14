@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   creationTimestamp: null
-  name: falco-backend
+  name: falco-integrator
 spec: {}
 status: {}
 
@@ -13,24 +13,24 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app.kubernetes.io/name: falco-backend
-  name: falco-backend
-  namespace: falco-backend
+    app.kubernetes.io/name: falco-integrator
+  name: falco-integrator
+  namespace: falco-integrator
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: falco-backend
+      app.kubernetes.io/name: falco-integrator
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app.kubernetes.io/name: falco-backend
+        app.kubernetes.io/name: falco-integrator
     spec:
       containers:
-      - image: phoenixop/falco-backend:0.0.1
-        name: falco-backend
+      - image: phoenixop/falco-integrator:0.0.1
+        name: falco-integrator
         resources: {}
         imagePullPolicy: Always
         env:
@@ -46,11 +46,11 @@ status: {}
 apiVersion: v1
 kind: Service
 metadata:
-  name: falco-backend
-  namespace: falco-backend
+  name: falco-integrator
+  namespace: falco-integrator
 spec:
   selector:
-    app.kubernetes.io/name: falco-backend
+    app.kubernetes.io/name: falco-integrator
   ports:
     - protocol: TCP
       port: 80
@@ -60,7 +60,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: falco-backend
+  name: falco-integrator
 rules:
 - apiGroups:
   - amtd.r6security.com
@@ -74,12 +74,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: falco-backend
+  name: falco-integrator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: falco-backend
+  name: falco-integrator
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: falco-backend
+  namespace: falco-integrator

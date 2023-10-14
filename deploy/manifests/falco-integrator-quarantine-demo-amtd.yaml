@@ -15,6 +15,6 @@ spec:
     - rule: 
         type: Terminal shell in container
         threatLevel: Notice
-        source: FalcoBackend
+        source: FalcoIntegrator
       action: quarantine
 
