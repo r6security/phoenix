@@ -28,18 +28,25 @@ If the Integration Backend exists for a specific tool the following steps are ne
 
 ##### 1. Deploying the Falco Integration Backend:
 
-See the detailed documentation at https://github.com/r6security/phoenix/falco-ib
+See the detailed documentation at https://github.com/r6security/phoenix/blob/main/docs/examples/falco-based-app-restart.md#falco-integrator-installation
 
 ##### 2. Configuring Falco:
 
 See the detailed documentation at https://github.com/falcosecurity/falco
 
-#### Timer integration
+#### Timer-based Trigger integration
 
-The Timer-based Trigger is a special part of the architecture in the sense that it is nor a 3rd party tool neither a security analytics tool. Its main purpose is to provide SecurityEvents with specific contents in a periodic manner. 
-The contents of the created SecurityEvent can be anything, so it can even mimic real 3rd party tool notifications towards Phoenix. 
+The Timer-based Trigger is a special part of the architecture as its main purpose is to provide periodic or scheduled triggers for Phoenix in the form of SecurityEvent CRDs. This feature can be used for multiple purposes:
+- Execute actions with the phoenix operator periodically or in a scheduled manner. e.g.: hourly restart a service to avoid any undetected action.
+- Update the SecurityEvent content and mimic events from another tool
+- Use a periodic trigger and an alerting system to check if phoenix operator is working
+- Debug/test the phoenix operator or new alert rules.
 
-Architecture-wise the specific aspect of the Timer-based Trigger is that the it can create SecurityEvents without an Integration Backend. The reason of this is that Timer-based Trigger is not an independent, standalone tool. Without Phoenix it has no purpose, however, for simplicity it made sense to have its own code base.
+Architecture-wise the special aspect of the Timer-based Trigger is that it can create SecurityEvents without an Integration Backend. The reason of this is that Timer-based Trigger is not an independent, standalone tool. Without Phoenix it has no purpose, however, for simplicity it made sense to have its own code base.
+
+##### Deployment and usage:
+
+See the detailed documentation at https://github.com/r6security/time-based-trigger#usage
 
 ### Extending Phoenix 
 
