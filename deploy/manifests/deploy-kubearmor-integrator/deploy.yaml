@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: kubearmor-integrator
+spec: {}
+status: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: kubearmor-integrator
+  name: kubearmor-integrator
+  namespace: kubearmor-integrator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kubearmor-integrator
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: kubearmor-integrator
+    spec:
+      containers:
+      - image: phoenixop/kubearmor-integrator:0.0.1
+        name: kubearmor-integrator
+        env:
+        - name: KUBEARMOR_SERVICE
+          value: "kubearmor.kubearmor.svc.cluster.local:32767"
+status: {}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubearmor-integrator
+rules:
+- apiGroups:
+  - amtd.r6security.com
+  resources:
+  - securityevents
+  verbs:
+  - get
+  - list
+  - create
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - create
+- apiGroups:
+  - ''
+  resources:
+  - pods/portforward
+  verbs:
+  - get
+  - list
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubearmor-integrator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubearmor-integrator
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: kubearmor-integrator
