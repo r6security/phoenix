@@ -31,3 +31,6 @@
 
 * [Restarting pod when a terminal is opened into it](examples/falco-based-app-restart.md)
 * [Putting pod into quarantine when terminal is opened into it](examples/falco-based-on-demand-app-quarantine.md)
+
+### KubeArmor based on-demand application restart
+* [Restarting pod when a KubeArmor alert is created](examples/kubearmor-based-app-restart.md)

@@ -1,6 +1,6 @@
 # Phoenix demo: KubeArmor based on-demand application restart
 
-This tutorial shows how to use Phoenix to restart a specific pod when a terminal is opened into it. For this Phoenix relies on triggers (SecurityEvents) that are created by the KubeArmor-integrator that translates KubeArmor events towards Phoenix. 
+This tutorial shows how to use Phoenix to restart a specific pod when a corresponding KubeArmor alert is created. Since KubeArmor is capable of doing security enforcement on its own, this scenario would like to show an example how Phoenix can be used to serve as another layer of security measures. In this simple example KubeArmor will be configured to block any usage of package manager inside the pod and in response to the alerts that KuberArmor generates Phoenix immediatly restarts the pod (the specific action is configurable). For this Phoenix relies on triggers (SecurityEvents) that are created by the KubeArmor-integrator that translates KubeArmor alerts towards Phoenix. 
 
 In this tutorial you will learn how to:
 
@@ -15,7 +15,7 @@ In this tutorial you will learn how to:
     kubectl -n moving-target-defense apply -f deploy/manifests/deploy-phoenix
 
 ## KubeArmor installation
-    
+
     helm repo add kubearmor https://kubearmor.github.io/charts
     helm repo update kubearmor
     helm upgrade --install kubearmor-operator kubearmor/kubearmor-operator -n kubearmor --create-namespace
@@ -23,12 +23,14 @@ In this tutorial you will learn how to:
 
 ### Deploy demo-page application and configure KubeArmor to deny execution of package management tools (apt/apt-get) by creating a policy
 
-    # create test application 
+ Create the test application:
+
     kubectl -n demo-page apply -f deploy/manifests/demo-page/demo-page-deployment.yaml
 
-    # create the policy
+Create the policy:
+
 ```
-cat <<EOF | kubectl apply -f -
+cat <<EOF | kubectl -n demo-page apply -f -
 apiVersion: security.kubearmor.com/v1
 kind: KubeArmorPolicy
 metadata:
@@ -56,20 +58,30 @@ Before triggering Phoenix let's confirm that KubeArmor already blocks the packag
 
     kubectl exec -it -n demo-page deployments/demo-page -c nginx -- bash -c "apt update && apt install masscan"
 
+It will be denied permission enforced by KubeArmor:
+
+    bash: line 1: /usr/bin/apt: Permission denied
+    command terminated with exit code 126
+
+However, no pod restart was carried out, since Phoenix has not been configured yet. 
+
     kubectl -n demo-page get pods
 
 Let's activate the MTD configuration to delete pod (serving as an additional layer of security measure) after it gets notification about the block event of KubeArmor.
 
-    kubectl -n demo-page apply -f deploy/manifests/falco-integrator-delete-demo-amtd.yaml 
+    kubectl -n demo-page apply -f deploy/manifests/kubearmor-integrator-delete-demo-amtd.yaml 
 
-### Trigger the Phoenix
+### Trigger Phoenix
 
 To trigger a KubeArmor event let's execute our previous command again that tries to run the package manager:
 
     kubectl exec -it -n demo-page deployments/demo-page -c nginx -- bash -c "apt update && apt install masscan"
 
+It will be denied permission enforced by KubeArmor:
+
+    bash: line 1: /usr/bin/apt: Permission denied
+    command terminated with exit code 126
+
+Also, this time the pod was deleted (which restarted the application) by Phoenix: 
+
     kubectl -n demo-page get pods
-
-Watch pods to see that the original pod was deleted (which restarted the application):
-
-    watch kubectl -n demo-page get pods 
