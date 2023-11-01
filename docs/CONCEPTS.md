@@ -28,11 +28,21 @@ If the Integration Backend exists for a specific tool the following steps are ne
 
 ##### 1. Deploying the Falco Integration Backend:
 
-See the detailed documentation at https://github.com/r6security/phoenix/blob/main/docs/examples/falco-based-app-restart.md#falco-integrator-installation
+See the detailed documentation [here](https://github.com/r6security/phoenix/blob/main/docs/examples/falco-based-app-restart.md#falco-integrator-installation)
 
 ##### 2. Configuring Falco:
 
-See the detailed documentation at https://github.com/falcosecurity/falco
+See the detailed documentation [here](https://github.com/falcosecurity/falco)
+
+#### KubeArmor integration
+
+##### 1. Deploying the KubeArmor Integration Backend:
+
+See the detailed documentation [here](https://github.com/r6security/phoenix/blob/main/docs/examples/kubearmor-based-app-restart.md#kubearmor-integrator-installation)
+
+##### 2. Configuring KubeArmor:
+
+See the detailed documentation [here](https://docs.kubearmor.io/kubearmor/documentation/security_policy_specification)
 
 #### Timer-based Trigger integration
 
