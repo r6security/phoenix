@@ -1,6 +1,6 @@
 # Phoenix demo: KubeArmor based on-demand application restart
 
-This tutorial shows how to use Phoenix to restart a specific pod when a corresponding KubeArmor alert is created. Since KubeArmor is capable of doing security enforcement on its own, this scenario would like to show an example how Phoenix can be used to serve as another layer of security measures. In this simple example KubeArmor will be configured to block any usage of package manager inside the pod and in response to the alerts that KuberArmor generates Phoenix immediatly restarts the pod (the specific action is configurable). For this Phoenix relies on triggers (SecurityEvents) that are created by the KubeArmor-integrator that translates KubeArmor alerts towards Phoenix. 
+This tutorial shows how to use Phoenix to restart a specific pod when a corresponding KubeArmor alert is created. Since KubeArmor is capable of doing security enforcement on its own, this scenario would like to show an example of how Phoenix can be used to serve as another layer of security measures. In this simple example, KubeArmor will be configured to block any usage of package manager inside the pod, and in response to the alerts that KuberArmor generates, Phoenix immediately restarts the pod (the specific action is configurable). For this, Phoenix relies on triggers (SecurityEvents) that are created by the KubeArmor-integrator which translates KubeArmor alerts towards Phoenix.
 
 In this tutorial you will learn how to:
 
@@ -54,7 +54,7 @@ EOF
 
 ## Phoenix configuration:
 
-Before triggering Phoenix let's confirm that KubeArmor already blocks the package manager usage, however the pod is not deleted yet because Phoenix configuration is not active:
+Before configuring Phoenix let's confirm that KubeArmor already blocks the package manager usage, however, the pod is not deleted yet because Phoenix configuration is not active:
 
     kubectl exec -it -n demo-page deployments/demo-page -c nginx -- bash -c "apt update && apt install masscan"
 
