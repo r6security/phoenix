@@ -18,6 +18,7 @@
 package v1beta1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -34,21 +35,49 @@ type AdaptiveMovingTargetDefenseSpec struct {
 	PodSelector map[string]string `json:"podSelector"`
 
 	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:MinItems=1
 	// Define strategy that maps actions to security events (based on the security event fields)
 	Strategy []ResponseStrategy `json:"strategy"`
+}
+
+type DisableAction struct{}
+type DeleteAction struct{}
+type QuarantineAction struct{}
+type Debugger struct {
+
+	// +kubebuilder:validation:Optional
+	Name string `json:"name,omitempty"`
+
+	// +kubebuilder:validation:Required
+	Image string `json:"image,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	Terminal bool `json:"terminal,omitempty"`
+}
+
+type CustomAction struct {
+	corev1.EphemeralContainer `json:""`
+}
+
+// +kubebuilder:validation:MaxProperties=1
+type AMTDAction struct {
+	Disable      *DisableAction    `json:"disable,omitempty"`
+	Delete       *DeleteAction     `json:"delete,omitempty"`
+	Quarantine   *QuarantineAction `json:"quarantine,omitempty"`
+	Debugger     *Debugger         `json:"debugger,omitempty"`
+	CustomAction *CustomAction     `json:"customAction,omitempty"`
 }
 
 // MovingStrategy Substructure for strategy definitions
 type ResponseStrategy struct {
 	//TODO: use enum for the specific values of these fields
-	//TODO: enforce that at least one strategy response definition is required
 
 	// +kubebuilder:validation:Required
 	Rule Rule `json:"rule"`
 
 	// +kubebuilder:validation:Required
 	// Action field value of the SecurityEvent that arrives
-	Action string `json:"action"`
+	Action AMTDAction `json:"action"`
 }
 
 type Rule struct {
@@ -71,9 +100,8 @@ type AdaptiveMovingTargetDefenseStatus struct {
 	// Important: Run "make" to regenerate code after modifying this file
 }
 
-//+kubebuilder:object:root=true
-//+kubebuilder:subresource:status
-
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
 // AdaptiveMovingTargetDefense is the Schema for the adaptivemovingtargetdefenses API
 type AdaptiveMovingTargetDefense struct {
 	metav1.TypeMeta   `json:",inline"`
