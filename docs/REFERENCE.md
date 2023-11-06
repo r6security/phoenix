@@ -21,23 +21,28 @@ For this `strategy` contains a set of `rule`-`action` pairs, where `rule` consis
     strategy:
       - rule: 
           type: default
-        action: disable
+        action: 
+          disable: {}
       - rule: 
           type: test
           threatLevel: warning
           source: TimerBackend
-        action: delete
+        action: 
+          delete: {}
       - rule: 
           type: network-attack
-        action: quarantine
+        action: 
+          quarantine: {}
       - rule: 
           type: filesystem-corruption
           threatLevel: medium
           source: falco
-        action: quarantine
+        action: 
+          quarantine: {}
       - rule: 
           threatLevel: medium
-        action: quarantine
+        action: 
+          quarantine: {}
 ```
 
 Applying this manifest creates a new `AdaptiveMovingTargetDefense` named "amtd-sample" that makes Phoenix to watch pods that have the label "app: booking-frontend". The `strategy` contains five `rule`-`action` pairs. The `rule` with "type: default" is  mandatory, since every `AdaptiveMovingTargetDefense` should have a default action that is executed in case there is no better matching rule. The `action` is configurable for the default rule too, which in the example is "disable".

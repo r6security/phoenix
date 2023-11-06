@@ -50,6 +50,12 @@ type SecurityEventStatus struct {
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster
+// +kubebuilder:printcolumn:name="Target",type=string,JSONPath=`.spec.targets[*]`
+// +kubebuilder:printcolumn:name="Source",type=string,JSONPath=`.spec.rule.source`
+// +kubebuilder:printcolumn:name="Type",type=string,JSONPath=`.spec.rule.type`
+// +kubebuilder:printcolumn:name="Level",type=string,JSONPath=`.spec.rule.threatLevel`
+// +kubebuilder:printcolumn:name="Description",type=string,JSONPath=`.spec.description`
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
 // SecurityEvent is the Schema for the securityevents API
 type SecurityEvent struct {
 	metav1.TypeMeta   `json:",inline"`

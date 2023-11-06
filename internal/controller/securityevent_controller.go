@@ -31,6 +31,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/utils/strings/slices"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -94,7 +95,7 @@ func (r *SecurityEventReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 
 		if err != nil {
 			if errors.IsNotFound(err) {
-				log.Info(fmt.Sprintf(`Pod "%s" does not exist`, pod.Name))
+				log.Info(fmt.Sprintf(`Pod "%s/%s" does not exist`, namespace, name))
 				return ctrl.Result{}, nil
 			} else {
 				// some other error happend
@@ -115,7 +116,7 @@ func (r *SecurityEventReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 		// ---------------------------------------------------
 		// Look for the proper action for the SecurityEvent in AMTDs that manage the pod
 		// ---------------------------------------------------
-		action := ""
+		var action amtdv1beta1.AMTDAction
 		var AMTDManageInfoList []AMTDManageInfo
 		json.Unmarshal([]byte(pod.ObjectMeta.Annotations[AMTD_MANAGED_BY]), &AMTDManageInfoList)
 		for _, AMTDManageInfo := range AMTDManageInfoList {
@@ -142,7 +143,7 @@ func (r *SecurityEventReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 				}
 			}
 			// we found the matching strategy no need to look further
-			if action != "" {
+			if action != (amtdv1beta1.AMTDAction{}) {
 				break
 			}
 		}
@@ -191,16 +192,88 @@ func (r *SecurityEventReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 
 		// ---------------------------------------------------
 		// Execute the proper action
+		// TODO: replace with Action interface and function call
 		// ---------------------------------------------------
-		switch action {
-		case "delete":
+		if action.Delete != nil {
 			podErr := r.Client.Delete(ctx, pod)
 
 			if err != nil && !errors.IsNotFound(err) {
 				log.Error(podErr, fmt.Sprintf(`Failed to delete pod "%s"`, req.Name))
 			}
 			log.Info(fmt.Sprintf(`Pod: "%s" was sucessfully deleted with ACTION: delete`, pod.Name))
-		case "quarantine":
+		} else if action.Debugger != nil {
+			if len(pod.Spec.Containers) == 0 {
+				log.Info("There is no container in the pod which can be used to attach the ephemeral container to")
+				break
+			}
+
+			if action.Debugger.Name == "" {
+				action.Debugger.Name = "amtd-debug-container"
+			}
+
+			ephemeralContainers := make([]string, len(pod.Spec.EphemeralContainers))
+			for _, c := range pod.Spec.EphemeralContainers {
+				ephemeralContainers = append(ephemeralContainers, c.Name)
+			}
+
+			if slices.Contains(ephemeralContainers, action.Debugger.Name) {
+				log.Info("Cannot attach a debug container because it is already exists")
+				break
+			}
+
+			ec := corev1.EphemeralContainer{
+				EphemeralContainerCommon: corev1.EphemeralContainerCommon{
+					Name:  action.Debugger.Name,
+					Image: action.Debugger.Image,
+					Stdin: action.Debugger.Terminal,
+					TTY:   action.Debugger.Terminal,
+				},
+				TargetContainerName: pod.Spec.Containers[0].Name,
+			}
+			pod.Spec.EphemeralContainers = append(pod.Spec.EphemeralContainers, ec)
+
+			err = r.Client.SubResource("ephemeralcontainers").Update(ctx, pod)
+
+			if err != nil {
+				log.Error(err, fmt.Sprintf(`Failed to update pod: "%s": %s`, pod.Name, err.Error()))
+				break
+			}
+			log.Info("Successfully attached debug container", "containerName", action.Debugger.Name)
+		} else if action.CustomAction != nil {
+
+			if len(pod.Spec.Containers) == 0 {
+				log.Info("There is no container in the pod which can be used to attach the ephemeral container to")
+				break
+			}
+
+			if action.CustomAction.Name == "" {
+				action.CustomAction.Name = "amtd-debug-container"
+			}
+
+			if action.CustomAction.TargetContainerName == "" {
+				action.CustomAction.TargetContainerName = pod.Spec.Containers[0].Name
+			}
+
+			ephemeralContainers := make([]string, len(pod.Spec.EphemeralContainers))
+			for _, c := range pod.Spec.EphemeralContainers {
+				ephemeralContainers = append(ephemeralContainers, c.Name)
+			}
+
+			if slices.Contains(ephemeralContainers, action.CustomAction.Name) {
+				log.Info("Cannot attach a custom action container because it is already exists")
+				break
+			}
+
+			pod.Spec.EphemeralContainers = append(pod.Spec.EphemeralContainers, action.CustomAction.EphemeralContainer)
+
+			err = r.Client.SubResource("ephemeralcontainers").Update(ctx, pod)
+
+			if err != nil {
+				log.Error(err, fmt.Sprintf(`Failed to update pod: "%s": %s`, pod.Name, err.Error()))
+				break
+			}
+			log.Info("Successfully attached custom action container", "containerName", action.CustomAction.Name)
+		} else if action.Quarantine != nil {
 			networkPolicyName := fmt.Sprintf("%s-%s-%s", pod.Namespace, pod.Name, "policy")
 
 			networkPolicy := &v1.NetworkPolicy{}
@@ -285,8 +358,8 @@ func (r *SecurityEventReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 				log.Error(err, fmt.Sprintf(`Failed to update pod: "%s": %s`, pod.Name, err.Error()))
 				return ctrl.Result{}, err
 			}
-		default:
-			log.Info(fmt.Sprintf(`ACTION: %s -> POD: %s - NOT IMPLEMENTED YET`, action, pod.Name))
+		} else {
+			log.Info(fmt.Sprintf(`ACTION: %v -> POD: %s - NOT IMPLEMENTED YET`, action, pod.Name))
 		}
 	}
 
