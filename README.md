@@ -18,7 +18,7 @@ For more details please check the [documentation](docs/README.md).
 
 ## Help
 
-Phoenix development is coordinated in Discord, feel free to [join](https://discord.gg/dpyAhN73).
+Phoenix development is coordinated in Discord, feel free to [join](https://discord.gg/zMt663CG).
 
 ## License
 
