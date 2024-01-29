@@ -12,9 +12,11 @@ spec:
   strategy:
     - rule: 
         type: default
-      action: disable
+      action:
+        disable: {}
     - rule: 
         type: test
         threatLevel: warning
         source: TimeBasedTrigger
-      action: delete
+      action:
+        delete: {}
