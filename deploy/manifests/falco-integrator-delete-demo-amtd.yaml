@@ -11,11 +11,11 @@ spec:
   strategy:
     - rule: 
         type: default
-      action: 
+      action:
         disable: {}
     - rule: 
         type: Terminal shell in container
         threatLevel: Notice
         source: FalcoIntegrator
-      action: 
+      action:
         delete: {}

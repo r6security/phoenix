@@ -21,27 +21,27 @@ For this `strategy` contains a set of `rule`-`action` pairs, where `rule` consis
     strategy:
       - rule: 
           type: default
-        action: 
+        action:
           disable: {}
       - rule: 
           type: test
           threatLevel: warning
           source: TimerBackend
-        action: 
+        action:
           delete: {}
       - rule: 
           type: network-attack
-        action: 
+        action:
           quarantine: {}
       - rule: 
           type: filesystem-corruption
           threatLevel: medium
           source: falco
-        action: 
+        action:
           quarantine: {}
       - rule: 
           threatLevel: medium
-        action: 
+        action:
           quarantine: {}
 ```
 
