@@ -20,6 +20,7 @@ spec:
         type: test
         threatLevel: warning
         source: TimerBackend
+actions
       action:
         delete: {}
     - rule: 

@@ -15,7 +15,26 @@ spec:
     singular: securityevent
   scope: Cluster
   versions:
-  - name: v1beta1
+  - additionalPrinterColumns:
+    - jsonPath: .spec.targets[*]
+      name: Target
+      type: string
+    - jsonPath: .spec.rule.source
+      name: Source
+      type: string
+    - jsonPath: .spec.rule.type
+      name: Type
+      type: string
+    - jsonPath: .spec.rule.threatLevel
+      name: Level
+      type: string
+    - jsonPath: .spec.description
+      name: Description
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: SecurityEvent is the Schema for the securityevents API
