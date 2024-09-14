@@ -22,6 +22,6 @@ Phoenix development is coordinated in Discord, feel free to [join](https://disco
 
 ## License
 
-Copyright 2021-2023 by [R6 Security](https://www.r6security.com), Inc. Some rights reserved.
+Copyright 2021-2024 by [R6 Security](https://www.r6security.com), Inc. Some rights reserved.
 
 Server Side Public License - see [LICENSE](/LICENSE) for full text.
