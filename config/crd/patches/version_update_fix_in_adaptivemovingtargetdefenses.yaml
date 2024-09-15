@@ -1,0 +1,46 @@
+# This Patch corrects controller-gen@v0.16 yaml generation from controller-runtime@v0.19 in k8@v1.30.4
+# References: 
+# CRD API - https://kubernetes.io/docs/reference/kubernetes-api/extend-resources/custom-resource-definition-v1/
+# extend K8 with CRD - https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: adaptivemovingtargetdefenses.amtd.r6security.com
+spec:
+  versions:
+    - name: v1beta1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                strategy:
+                  type: object
+                  items:
+                    type: object
+                    properties:
+                      action:
+                        type: object
+                        properties:
+                          customAction:
+                            type: object
+                            properties:
+                              ports:
+                                type: object
+                                items:
+                                  type: object
+                                  properties:
+                                    protocol:
+                                      type: string
+                                      enum:
+                                        - TCP
+                                        - UDP
+                                        - SCTP
+                                      default: TCP
+                                      description: |-
+                                        Protocol for port. Must be UDP, TCP, or SCTP.
+                                        Defaults to "TCP".

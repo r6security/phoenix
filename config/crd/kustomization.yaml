@@ -1,4 +1,6 @@
 # This kustomization.yaml is not intended to be run by itself,
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 # since it depends on service name and namespace that are out of this kustomize package.
 # It should be run by config/default
 resources:
@@ -6,7 +8,7 @@ resources:
 - bases/amtd.r6security.com_securityevents.yaml
 #+kubebuilder:scaffold:crdkustomizeresource
 
-patchesStrategicMerge:
+patches:
 # [WEBHOOK] To enable webhook, uncomment all the sections with [WEBHOOK] prefix.
 # patches here are for enabling the conversion webhook for each CRD
 #- patches/webhook_in_adaptivemovingtargetdefenses.yaml
@@ -18,6 +20,16 @@ patchesStrategicMerge:
 #- patches/cainjection_in_adaptivemovingtargetdefenses.yaml
 #- patches/cainjection_in_securityevents.yaml
 #+kubebuilder:scaffold:crdkustomizecainjectionpatch
+
+# [VERSION UPDATE FIX] core/v1 plus controller-gen@v0.16 plus controller-runtime@v0.19 generates a rare
+# double default value allOf statement. Read further at:
+- path: patches/version_update_fix_in_adaptivemovingtargetdefenses.yaml
+  target:
+    version: v1
+    kind: CustomResourceDefinition
+    name: adaptivemovingtargetdefenses.amtd.r6security.com  # Target the specific CRD by name
+#+kubebuilder:scaffold:crdkustomizeversionupdatefixpatch
+
 
 # the following config is for teaching kustomize how to do kustomization for CRDs.
 configurations:
