@@ -15,8 +15,8 @@ spec:
       action:
         disable: {}
     - rule: 
-        type: test
-        threatLevel: warning
+        type: timed
+        threatLevel: info
         source: TimeBasedTrigger
       action:
         delete: {}

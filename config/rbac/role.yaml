@@ -2,38 +2,12 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  creationTimestamp: null
   name: manager-role
 rules:
 - apiGroups:
   - amtd.r6security.com
   resources:
   - adaptivemovingtargetdefenses
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - amtd.r6security.com
-  resources:
-  - adaptivemovingtargetdefenses/finalizers
-  verbs:
-  - update
-- apiGroups:
-  - amtd.r6security.com
-  resources:
-  - adaptivemovingtargetdefenses/status
-  verbs:
-  - get
-  - patch
-  - update
-- apiGroups:
-  - amtd.r6security.com
-  resources:
   - securityevents
   verbs:
   - create
@@ -46,12 +20,14 @@ rules:
 - apiGroups:
   - amtd.r6security.com
   resources:
+  - adaptivemovingtargetdefenses/finalizers
   - securityevents/finalizers
   verbs:
   - update
 - apiGroups:
   - amtd.r6security.com
   resources:
+  - adaptivemovingtargetdefenses/status
   - securityevents/status
   verbs:
   - get

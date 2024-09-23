@@ -6,7 +6,7 @@ resources:
 - bases/amtd.r6security.com_securityevents.yaml
 #+kubebuilder:scaffold:crdkustomizeresource
 
-patchesStrategicMerge:
+patches:
 # [WEBHOOK] To enable webhook, uncomment all the sections with [WEBHOOK] prefix.
 # patches here are for enabling the conversion webhook for each CRD
 #- patches/webhook_in_adaptivemovingtargetdefenses.yaml
