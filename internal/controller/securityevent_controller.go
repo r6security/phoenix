@@ -264,7 +264,16 @@ func (r *SecurityEventReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 				break
 			}
 
-			pod.Spec.EphemeralContainers = append(pod.Spec.EphemeralContainers, action.CustomAction.EphemeralContainer)
+			ec := corev1.EphemeralContainer{
+				EphemeralContainerCommon: corev1.EphemeralContainerCommon{
+					Name:  action.CustomAction.Name,
+					Image: action.CustomAction.Image,
+					Stdin: action.CustomAction.Stdin,
+					TTY:   action.CustomAction.TTY,
+				},
+				TargetContainerName: pod.Spec.Containers[0].Name,
+			}
+			pod.Spec.EphemeralContainers = append(pod.Spec.EphemeralContainers, ec)
 
 			err = r.Client.SubResource("ephemeralcontainers").Update(ctx, pod)
 
