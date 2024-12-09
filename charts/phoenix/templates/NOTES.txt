@@ -1,6 +1,6 @@
 R6 Security Phoenix AMTD Operator for Kubernetes
 
-Chart  successfully installed.
+Chart successfully installed.
 
 '{{ .Chart.Name }}' is you current release.
 To check out the installed resources:
