@@ -11,25 +11,25 @@ Phoenix leverages Automated Moving Target Defense (AMTD) to deliver dynamic, sca
 ## Features
 🔄 Dynamic Container Refresh
 
-    Automatically rotates containers, nodes, and resources.
-    Disrupts attack patterns while ensuring 100% uptime.
+Automatically rotates containers, nodes, and resources.
+Disrupts attack patterns while ensuring 100% uptime.
 
 📜 Real-Time Policy Adaptation
 
-    Adjusts security policies dynamically using Prometheus telemetry.
-    Reduces false positives and eliminates manual configurations.
+Adjusts security policies dynamically using Prometheus telemetry.
+Reduces false positives and eliminates manual configurations.
 
 🔄 Automated Rollbacks
 
-    Restores environments to known-good states after misconfigurations or breaches.
+Restores environments to known-good states after misconfigurations or breaches.
 
 🛠️ Self-Healing Infrastructure
 
-    Node Infrastructure Modules (NIMs) autonomously detect and recover from anomalies.
+Node Infrastructure Modules (NIMs) autonomously detect and recover from anomalies.
 
 📈 Seamless Observability
 
-    Full integration with Prometheus and Grafana for actionable insights into AMTD activities.
+Full integration with Prometheus and Grafana for actionable insights into AMTD activities.
     
 ## Documentation
 
