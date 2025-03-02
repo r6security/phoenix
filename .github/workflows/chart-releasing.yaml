@@ -2,8 +2,9 @@ name: Release Charts
 
 on:
   push:
-    branches:
-      - main
+    # Pattern matched against refs/tags
+    tags:
+      - '*'
 
 jobs:
   release:
