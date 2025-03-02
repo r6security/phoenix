@@ -230,13 +230,3 @@ subjects:
     name: operator-controller-manager
     namespace: {{ .Release.Namespace }}
 ---
-apiVersion: v1
-data:
-  .dockerconfigjson: eyJhdXRocyI6eyJyZWdpc3RyeS5naXRsYWIuY29tIjp7InVzZXJuYW1lIjoiZ2l0bGFiK2RlcGxveS10b2tlbi0yMjEzMjcyIiwicGFzc3dvcmQiOiJ2NldRaXVFMnhTR0NMNHZWTFdyYyIsImF1dGgiOiJaMmwwYkdGaUsyUmxjR3h2ZVMxMGIydGxiaTB5TWpFek1qY3lPblkyVjFGcGRVVXllRk5IUTB3MGRsWk1WM0pqIn19fQ==
-kind: Secret
-metadata:
-  creationTimestamp: null
-  name: operator-registry-secret
-  namespace: {{ .Release.Namespace }}
-type: kubernetes.io/dockerconfigjson
----

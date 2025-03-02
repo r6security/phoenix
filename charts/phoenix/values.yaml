@@ -1,0 +1,30 @@
+amtd:
+  image:
+    repository: ghcr.io/r6security/phoenix/amtd-operator
+    pullPolicy: IfNotPresent
+    tag: "v0.2.2"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                  - amd64
+                  - arm64
+                  - ppc64le
+                  - s390x
+              - key: kubernetes.io/os
+                operator: In
+                values:
+                  - linux
