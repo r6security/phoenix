@@ -1,3 +1,13 @@
+## Deploy with Helm
+
+Using [Helm], the AMTD operator can be deployed with just a few commands.
+
+```yaml
+helm repo add r6security https://r6security.github.io/phoenix/
+# with the default values
+helm install phoenix r6security/phoenix
+```
+
 ## Prerequisites
 
 In itself Phoenix does not have any specific dependency regarding its core installation, [AMTD Operator](/docs/concepts/...) and [Time-based Trigger](/docs/concepts/...), however if you want to integrate it with 3rd party tools, e.g. [Falco](https://falco.org/), [KubeArmor](https://kubearmor.io/), etc. you need to have these tools installed and configured as well.

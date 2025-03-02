@@ -30,10 +30,14 @@ Node Infrastructure Modules (NIMs) autonomously detect and recover from anomalie
 📈 Seamless Observability
 
 Full integration with Prometheus and Grafana for actionable insights into AMTD activities.
-    
+
 ## Documentation
 
 For more details please check the [documentation](docs/README.md).
+
+### Installation
+
+For more detail please check the [install guide](docs/INSTALL.md#deploy-with-helm).
 
 ## Caveats
 
