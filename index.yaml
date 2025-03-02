@@ -3,6 +3,16 @@ entries:
   phoenix:
   - apiVersion: v2
     appVersion: v0.2.2
+    created: "2025-03-02T16:04:58.159145343Z"
+    description: A Helm chart for Kubernetes
+    digest: 921c5940835469fd7f7b5ebc9e8a8ace80aab69c43bd019f1c3957486ca86ba9
+    name: phoenix
+    type: application
+    urls:
+    - https://github.com/r6security/phoenix/releases/download/phoenix-0.1.3/phoenix-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: v0.2.2
     created: "2025-03-02T12:22:46.564936628Z"
     description: A Helm chart for Kubernetes
     digest: 01c96ab942507004402f49d301c32e76e17b5d6defb588b569d3c55823d24b80
@@ -31,4 +41,4 @@ entries:
     urls:
     - https://github.com/r6security/phoenix/releases/download/phoenix-0.1.0/phoenix-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-02T12:22:46.564958509Z"
+generated: "2025-03-02T16:04:58.15917021Z"
