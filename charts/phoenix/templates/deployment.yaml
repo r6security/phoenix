@@ -2,50 +2,58 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    control-plane: controller-manager
-  name: operator-controller-manager
+  name: {{ include "amtd.fullname" . }}-controller-manager
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "amtd.labels" . | nindent 4 }}
+    control-plane: controller-manager
 spec:
-  replicas: 1
+  replicas: {{ .Values.amtd.replicaCount }}
   selector:
     matchLabels:
+      app.kubernetes.io/name: {{ include "amtd.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
       control-plane: controller-manager
   template:
     metadata:
+      labels:
+        {{- include "amtd.labels" . | nindent 8 }}
+        control-plane: controller-manager
       annotations:
         kubectl.kubernetes.io/default-container: manager
-      labels:
-        control-plane: controller-manager
     spec:
+      serviceAccountName: {{ include "amtd.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.amtd.terminationGracePeriodSeconds }}
+      securityContext:
+        runAsNonRoot: true
       containers:
-        - args:
-            - --health-probe-bind-address=:8081
-            - --metrics-bind-address=127.0.0.1:8080
-            - --leader-elect
+        - name: manager
+          image: "{{ .Values.amtd.image.repository }}:{{ .Values.amtd.image.tag }}"
+          imagePullPolicy: {{ .Values.amtd.image.pullPolicy | quote }}
           command:
             - /manager
-          image: {{ .Values.amtd.image.repository }}:{{ .Values.amtd.image.tag }}
+          args:
+            - --health-probe-bind-address={{ .Values.amtd.healthProbeBindAddress }}
+            - --metrics-bind-address={{ .Values.amtd.metricsBindAddress }}
+            - --leader-elect
           livenessProbe:
             httpGet:
-              path: /healthz
-              port: 8081
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          name: manager
+              path: {{ .Values.amtd.livenessProbe.path }}
+              port: {{ .Values.amtd.livenessProbe.port }}
+            initialDelaySeconds: {{ .Values.amtd.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.amtd.livenessProbe.periodSeconds }}
           readinessProbe:
             httpGet:
-              path: /readyz
-              port: 8081
-            initialDelaySeconds: 5
-            periodSeconds: 10
+              path: {{ .Values.amtd.readinessProbe.path }}
+              port: {{ .Values.amtd.readinessProbe.port }}
+            initialDelaySeconds: {{ .Values.amtd.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.amtd.readinessProbe.periodSeconds }}
           resources:
             {{- toYaml .Values.amtd.resources | nindent 12 }}
+          {{- with .Values.amtd.securityContext }}
           securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
       {{- with .Values.amtd.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
@@ -58,8 +66,11 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      securityContext:
-        runAsNonRoot: true
-      serviceAccountName: operator-controller-manager
-      terminationGracePeriodSeconds: 10
----
+      {{- with .Values.amtd.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with  .Values.amtd.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
