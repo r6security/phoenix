@@ -43,4 +43,4 @@ Watch pods to see the restarts in every 30 seconds:
 
     kubectl -n moving-target-defense delete -f deploy/manifests/deploy-phoenix
     kubectl -n time-based-trigger delete -f deploy/manifests/deploy-time-based-trigger
-    kubectl delete -n demo-page
+    kubectl delete namespace demo-page
