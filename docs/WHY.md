@@ -36,6 +36,6 @@ You can construct your very own strategy on:
 
 Due to the loosly coupled, extendable architecture of Phoenix you have great flexibility in designing the strategies you need.
 
-* [Getting Started](phoenix-documentation-webpage/docs/getting-started/): Get started with Phoenix!
-* [Tutorials](phoenix-documentation-webpage/docs/tutorials/): Check out the tutorials!
+* [Getting Started](README.md#getting-started): Get started with Phoenix!
+* [Tutorials](README.md#tutorials): Check out the tutorials!
 

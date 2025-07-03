@@ -56,7 +56,7 @@ Architecture-wise the special aspect of the Timer-based Trigger is that it can c
 
 ##### Deployment and usage:
 
-See the detailed documentation at https://github.com/r6security/time-based-trigger#usage
+See the detailed documentation [here](https://github.com/r6security/time-based-trigger#usage)
 
 ### Extending Phoenix 
 

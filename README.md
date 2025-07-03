@@ -43,12 +43,8 @@ For more detail please check the [install guide](docs/INSTALL.md#deploy-with-hel
 
 * The project is in an early stage where the current focus is to be able to provide a proof-of-concept implementation that a wider range of potential users can try out. We are welcome all feedbacks and ideas as we continuously improve the project and introduc new features.
 
-## Help
-
-Phoenix development is coordinated in Discord, feel free to [join](https://discord.gg/9t8FXumA).
-
 ## License
 
-Copyright 2021-2024 by [R6 Security](https://www.r6security.com), Inc. Some rights reserved.
+Copyright 2021-2025 by [R6 Security](https://www.r6security.com), Inc. Some rights reserved.
 
 Server Side Public License - see [LICENSE](/LICENSE) for full text.
