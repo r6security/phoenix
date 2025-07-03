@@ -32,6 +32,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
+	"sigs.k8s.io/controller-runtime/pkg/metrics/filters"
 
 	amtdv1beta1 "github.com/r6security/phoenix/api/v1beta1"
 	"github.com/r6security/phoenix/internal/controller"
@@ -70,8 +71,12 @@ func main() {
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts)))
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
-		Scheme:                        scheme,
-		Metrics:                       server.Options{BindAddress: metricsAddr},
+		Scheme: scheme,
+		Metrics: server.Options{
+			BindAddress:    metricsAddr,
+			SecureServing:  true,
+			FilterProvider: filters.WithAuthenticationAndAuthorization,
+		},
 		WebhookServer:                 webhook.NewServer(webhook.Options{Port: 9443}),
 		HealthProbeBindAddress:        probeAddr,
 		LeaderElection:                enableLeaderElection,
