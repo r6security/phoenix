@@ -120,6 +120,13 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "SecurityEvent")
 		os.Exit(1)
 	}
+	
+	// Setup interval timer controller
+	intervalTimerController := controller.NewIntervalTimerController(mgr.GetClient(), mgr.GetScheme())
+	if err = intervalTimerController.SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "IntervalTimer")
+		os.Exit(1)
+	}
 	//+kubebuilder:scaffold:builder
 
 	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {
