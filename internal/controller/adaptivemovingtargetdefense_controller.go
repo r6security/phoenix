@@ -175,6 +175,12 @@ func (r *AdaptiveMovingTargetDefenseReconciler) Reconcile(ctx context.Context, r
 		}
 		pod.ObjectMeta.Annotations[AMTD_MANAGED_BY] = string(amtdManagedInfoListEncoded)
 
+		// Add r6security label for AMTD-managed pods (GitHub issue #15)
+		if pod.ObjectMeta.Labels == nil {
+			pod.ObjectMeta.Labels = map[string]string{}
+		}
+		pod.ObjectMeta.Labels[R6_SECURITY_MANAGED_LABEL] = "true"
+
 		// Try to apply this patch, if it fails, return the failure
 		// TODO: before update we could check whether any changes would happen
 		err = r.Client.Update(ctx, &pod)
@@ -206,6 +212,10 @@ func removeAMTDAnnotationFromPod(pod corev1.Pod, log logr.Logger, reqNamespace s
 
 	if len(amtdManageInfoList) == 0 {
 		delete(pod.ObjectMeta.Annotations, AMTD_MANAGED_BY)
+		// Remove r6security label when pod is no longer AMTD-managed (GitHub issue #15)
+		if pod.ObjectMeta.Labels != nil {
+			delete(pod.ObjectMeta.Labels, R6_SECURITY_MANAGED_LABEL)
+		}
 	} else {
 		amtdManagedInfoListEncoded, err := json.Marshal(amtdManageInfoList)
 		if err != nil {
