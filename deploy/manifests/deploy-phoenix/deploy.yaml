@@ -1917,7 +1917,7 @@ spec:
         - containerPort: 8080
           name: https
           protocol: TCP
-        image: phoenixop/amtd-operator:0.5-port8080
+        image: ghcr.io/r6security/phoenix/amtd-operator:v0.2.0
         livenessProbe:
           httpGet:
             path: /healthz
