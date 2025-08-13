@@ -9,7 +9,8 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: serviceaccount
     app.kubernetes.io/part-of: operator
-  name: operator-controller-manager
+    {{- include "amtd.labels" . | nindent 4 }}
+  name: {{ include "amtd.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -22,7 +23,8 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: role
     app.kubernetes.io/part-of: operator
-  name: operator-leader-election-role
+    {{- include "amtd.labels" . | nindent 4 }}
+  name: {{ include "amtd.fullname" . }}-leader-election-role
   namespace: {{ .Release.Namespace }}
 rules:
   - apiGroups:
@@ -60,7 +62,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: operator-manager-role
+  name: {{ include "amtd.fullname" . }}-manager-role
 rules:
   - apiGroups:
       - amtd.r6security.com
@@ -137,7 +139,8 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: clusterrole
     app.kubernetes.io/part-of: operator
-  name: operator-metrics-reader
+    {{- include "amtd.labels" . | nindent 4 }}
+  name: {{ include "amtd.fullname" . }}-metrics-reader
 rules:
   - nonResourceURLs:
       - /metrics
@@ -154,7 +157,8 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: clusterrole
     app.kubernetes.io/part-of: operator
-  name: operator-proxy-role
+    {{- include "amtd.labels" . | nindent 4 }}
+  name: {{ include "amtd.fullname" . }}-proxy-role
 rules:
   - apiGroups:
       - authentication.k8s.io
@@ -179,15 +183,16 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: rolebinding
     app.kubernetes.io/part-of: operator
-  name: operator-leader-election-rolebinding
+    {{- include "amtd.labels" . | nindent 4 }}
+  name: {{ include "amtd.fullname" . }}-leader-election-rolebinding
   namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: operator-leader-election-role
+  name: {{ include "amtd.fullname" . }}-leader-election-role
 subjects:
   - kind: ServiceAccount
-    name: operator-controller-manager
+    name: {{ include "amtd.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -200,14 +205,15 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: clusterrolebinding
     app.kubernetes.io/part-of: operator
-  name: operator-manager-rolebinding
+    {{- include "amtd.labels" . | nindent 4 }}
+  name: {{ include "amtd.fullname" . }}-manager-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: operator-manager-role
+  name: {{ include "amtd.fullname" . }}-manager-role
 subjects:
   - kind: ServiceAccount
-    name: operator-controller-manager
+    name: {{ include "amtd.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -220,13 +226,13 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: clusterrolebinding
     app.kubernetes.io/part-of: operator
-  name: operator-proxy-rolebinding
+    {{- include "amtd.labels" . | nindent 4 }}
+  name: {{ include "amtd.fullname" . }}-proxy-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: operator-proxy-role
+  name: {{ include "amtd.fullname" . }}-proxy-role
 subjects:
   - kind: ServiceAccount
-    name: operator-controller-manager
+    name: {{ include "amtd.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
----
