@@ -21,7 +21,7 @@
 
 ### Killercoda
 
-* [Self-paced demos on Killercoda interactive environments](https://killercoda.com/phoenix/scenario/test-demo)
+* [Self-paced demos on Killercoda interactive environments](https://killercoda.com/r6security1/scenario/demo)
 
 ### Timer based application restart
 
