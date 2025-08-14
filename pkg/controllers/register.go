@@ -50,4 +50,22 @@ func RegisterCoreControllers(mgr ctrl.Manager) error {
     return nil
 }
 
+// RegisterAMTDAndPodControllers registers only AMTD and Pod controllers.
+func RegisterAMTDAndPodControllers(mgr ctrl.Manager) error {
+    if err := (&internalcontroller.AdaptiveMovingTargetDefenseReconciler{
+        Client: mgr.GetClient(),
+        Scheme: mgr.GetScheme(),
+    }).SetupWithManager(mgr); err != nil {
+        return err
+    }
+
+    if err := (&internalcontroller.PodReconciler{
+        Client: mgr.GetClient(),
+        Scheme: mgr.GetScheme(),
+    }).SetupWithManager(mgr); err != nil {
+        return err
+    }
+    return nil
+}
+
 
