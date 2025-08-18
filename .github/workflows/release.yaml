@@ -1,10 +1,10 @@
 name: Release Docker Image
 
 on:
-#test
+
   push:
-    branches:
-        - release
+    tags:
+      - 'v*'
 
   workflow_dispatch:
 
