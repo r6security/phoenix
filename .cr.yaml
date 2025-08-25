@@ -1,0 +1,9 @@
+owner: r6security
+git-repo: phoenix
+package-path: .cr-release-packages
+pages-branch: gh-pages
+skip-existing: true
+release-name-template: "{{ .Name }}-{{ .Version }}"
+charts-repo: https://r6security.github.io/phoenix
+generate-release-notes: true
+
