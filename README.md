@@ -45,6 +45,6 @@ For more detail please check the [install guide](docs/INSTALL.md#deploy-with-hel
 
 ## License
 
-Copyright 2021-2025 by [R6 Security](https://www.r6security.com), Inc. Some rights reserved.
+Copyright 2021-2026 by [R6 Security](https://www.r6security.com), Inc. Some rights reserved.
 
 Server Side Public License - see [LICENSE](/LICENSE) for full text.
