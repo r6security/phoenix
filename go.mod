@@ -1,6 +1,6 @@
 module github.com/r6security/phoenix
 
-go 1.24.10
+go 1.24.13
 
 require (
 	github.com/go-logr/logr v1.4.3

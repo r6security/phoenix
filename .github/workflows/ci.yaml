@@ -32,3 +32,8 @@ jobs:
 
       - name: test
         run: go test ./... -short -coverprofile=cover.out -count=1
+
+      - name: govulncheck
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          $(go env GOPATH)/bin/govulncheck ./...
