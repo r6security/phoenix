@@ -25,6 +25,9 @@ spec:
       creationTimestamp: null
       labels:
         app: demo-page
+      annotations:
+        time-based-trigger.amtd.r6security.com/enabled: "true"
+        time-based-trigger.amtd.r6security.com/schedule: "30s"
     spec:
       containers:
       - image: nginx:1.25.1
