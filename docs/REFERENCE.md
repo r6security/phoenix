@@ -1,3 +1,9 @@
+## NIM add-on (annotation contract)
+
+The built-in NIM controller watches pods with applied SecurityEvents and performs NIM-enhanced restarts when a **time-based** trigger is present. See [NIM](NIM.md) for behavior and the annotation contract (`amtd.r6security.com/applied-sec-events`, `nim.r6security.com/*`).
+
+---
+
 ## Custom Resources 
 
 A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation, however, it can be added at any time by deploying a CustomResourceDefinition. 

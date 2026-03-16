@@ -27,5 +27,5 @@ const (
 	R6_SECURITY_EVENT_RECEIVED   string = "amtd.r6security.event.received"
 
 	// R6Security label for AMTD-managed pods (GitHub issue #15)
-	R6_SECURITY_MANAGED_LABEL    string = "r6security.com/managed-by-amtd"
+	R6_SECURITY_MANAGED_LABEL string = "r6security.com/managed-by-amtd"
 )

@@ -18,54 +18,52 @@
 package controllers
 
 import (
-    ctrl "sigs.k8s.io/controller-runtime"
+	ctrl "sigs.k8s.io/controller-runtime"
 
-    internalcontroller "github.com/r6security/phoenix/internal/controller"
+	internalcontroller "github.com/r6security/phoenix/internal/controller"
 )
 
 // RegisterCoreControllers registers all core Phoenix controllers with the manager.
 // This wrapper keeps controller implementations internal while exposing a public entrypoint.
 func RegisterCoreControllers(mgr ctrl.Manager) error {
-    if err := (&internalcontroller.AdaptiveMovingTargetDefenseReconciler{
-        Client: mgr.GetClient(),
-        Scheme: mgr.GetScheme(),
-    }).SetupWithManager(mgr); err != nil {
-        return err
-    }
+	if err := (&internalcontroller.AdaptiveMovingTargetDefenseReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		return err
+	}
 
-    if err := (&internalcontroller.PodReconciler{
-        Client: mgr.GetClient(),
-        Scheme: mgr.GetScheme(),
-    }).SetupWithManager(mgr); err != nil {
-        return err
-    }
+	if err := (&internalcontroller.PodReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		return err
+	}
 
-    if err := (&internalcontroller.SecurityEventReconciler{
-        Client: mgr.GetClient(),
-        Scheme: mgr.GetScheme(),
-    }).SetupWithManager(mgr); err != nil {
-        return err
-    }
+	if err := (&internalcontroller.SecurityEventReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		return err
+	}
 
-    return nil
+	return nil
 }
 
 // RegisterAMTDAndPodControllers registers only AMTD and Pod controllers.
 func RegisterAMTDAndPodControllers(mgr ctrl.Manager) error {
-    if err := (&internalcontroller.AdaptiveMovingTargetDefenseReconciler{
-        Client: mgr.GetClient(),
-        Scheme: mgr.GetScheme(),
-    }).SetupWithManager(mgr); err != nil {
-        return err
-    }
+	if err := (&internalcontroller.AdaptiveMovingTargetDefenseReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		return err
+	}
 
-    if err := (&internalcontroller.PodReconciler{
-        Client: mgr.GetClient(),
-        Scheme: mgr.GetScheme(),
-    }).SetupWithManager(mgr); err != nil {
-        return err
-    }
-    return nil
+	if err := (&internalcontroller.PodReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		return err
+	}
+	return nil
 }
-
-

@@ -24,3 +24,8 @@ Dockerfile.cross
 *.swp
 *.swo
 *~
+
+# Local agent / session continuity — do not commit (SSOT = board + issue bodies)
+READMEDEV.md
+docs/HANDOVER.md
+docs/SPRINT-*-PLAN.md

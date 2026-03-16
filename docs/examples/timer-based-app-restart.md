@@ -27,15 +27,16 @@ In this tutorial you will learn how to:
 
 ## Configure Time-based Trigger
 
-- Set the timer to 30s:
+The Time-based Trigger needs **both** annotations on the pod: `time-based-trigger.amtd.r6security.com/enabled` and `time-based-trigger.amtd.r6security.com/schedule`. Set both in one patch (under `spec.template.metadata.annotations`):
+
+```bash
+kubectl patch -n demo-page deployments.apps demo-page -p '{"spec":{"template":{"metadata":{"annotations":{"time-based-trigger.amtd.r6security.com/enabled":"true","time-based-trigger.amtd.r6security.com/schedule":"30s"}}}}}'
 ```
-kubectl patch -n demo-page deployments.apps demo-page -p '"spec": {"template": { "metadata": {"annotations": {"time-based-trigger.amtd.r6security.com/schedule": "30s"}}}}'
-```
--  Enable time-based-trigger for the pod
-```
-kubectl patch -n demo-page deployments.apps demo-page -p '"spec": {"template": { "metadata": {"annotations": {"time-based-trigger.amtd.r6security.com/enabled": "true"}}}}'
-```
-Watch pods to see the restarts in every 30 seconds:
+
+If the trigger doesn't run, verify the pod has both annotations:
+`kubectl get pod -n demo-page -l app=demo-page -o jsonpath='{.items[0].metadata.annotations}'`
+
+Watch pods to see the restarts every 30 seconds:
 
 	watch kubectl -n demo-page get pods
 

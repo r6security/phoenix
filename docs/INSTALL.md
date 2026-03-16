@@ -60,14 +60,18 @@ kubectl apply -n demo-page -f deploy/manifests/time-based-trigger-demo-amtd.yaml
 kubectl -n moving-target-defense get AdaptiveMovingTargetDefense
 ```
 
-3. Enable time backend for the demo-page deployment and schdedule the restart in every 30s:
+3. Enable the 30s time-based trigger (optional — the demo deployment already includes these annotations):
 
-```
-kubectl patch -n demo-page deployments.apps demo-page -p '"spec": {"template": { "metadata": {"annotations": {"time-based-trigger.amtd.r6security.com/schedule": "30s"}}}}'
-kubectl patch -n demo-page deployments.apps demo-page -p '"spec": {"template": { "metadata": {"annotations": {"time-based-trigger.amtd.r6security.com/enabled": "true"}}}}'
-```
+   The Time-based Trigger requires **both** annotations on the pod template: `time-based-trigger.amtd.r6security.com/enabled` and `time-based-trigger.amtd.r6security.com/schedule`. The `demo-page-deployment.yaml` in this repo already sets them. If you use a different deployment or need to change the schedule, apply **one** patch that sets both (annotations must be under `spec.template.metadata.annotations`):
 
-4. Watch pods to see the restarts in every 30 seconds:
+   ```bash
+   kubectl patch -n demo-page deployments.apps demo-page -p '{"spec":{"template":{"metadata":{"annotations":{"time-based-trigger.amtd.r6security.com/enabled":"true","time-based-trigger.amtd.r6security.com/schedule":"30s"}}}}}'
+   ```
+
+   **If the trigger doesn't run:** Check that the pod has both annotations:  
+   `kubectl get pod -n demo-page -l app=demo-page -o jsonpath='{.items[0].metadata.annotations}'`
+
+4. Watch pods to see the restarts every 30 seconds:
 
 ```
 watch kubectl -n demo-page get pods
