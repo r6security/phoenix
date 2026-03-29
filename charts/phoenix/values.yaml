@@ -1,8 +1,36 @@
+nameOverride: ""
+fullnameOverride: ""
+
 amtd:
+  replicaCount: 1
   image:
     repository: ghcr.io/r6security/phoenix/amtd-operator
+    tag: v0.2.2
     pullPolicy: IfNotPresent
-    tag: "v0.2.2"
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+    name: ""
+
+  terminationGracePeriodSeconds: 10
+
+  healthProbeBindAddress: ":8081"
+  metricsBindAddress: "127.0.0.1:8080"
+
+  livenessProbe:
+    path: /healthz
+    port: 8081
+    initialDelaySeconds: 15
+    periodSeconds: 20
+
+  readinessProbe:
+    path: /readyz
+    port: 8081
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
   resources:
     limits:
       cpu: 500m
@@ -10,21 +38,14 @@ amtd:
     requests:
       cpu: 10m
       memory: 64Mi
+
   nodeSelector: {}
   tolerations: []
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: kubernetes.io/arch
-                operator: In
-                values:
-                  - amd64
-                  - arm64
-                  - ppc64le
-                  - s390x
-              - key: kubernetes.io/os
-                operator: In
-                values:
-                  - linux
+  affinity: {}
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+  topologySpreadConstraints: []
+  imagePullSecrets: []
